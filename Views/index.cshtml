@@ -1,0 +1,11 @@
+<h1>Here are the tasks: </h1>
+<ul>
+  @foreach (var index in Model)
+  {
+    <li>@index.GetDescription()</li>
+  }
+</ul>
+
+<a href="/tasks/new"><button>Add a new Task</button></a>
+<a href="/tasks/delete"><button>Delete tasks</button></a>
+<a href="/tasks/search"><button>Search tasks</button></a>
