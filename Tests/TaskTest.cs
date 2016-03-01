@@ -24,8 +24,9 @@ namespace ToDoList
     [Fact]
     public void Test_Equal_overrideTrueForSameDescription()
     {
-      Task firstTask = new Task("Mow the lawn", 1);
-      Task secondTask = new Task("Mow the lawn", 1);
+      DateTime testDate = new DateTime(2016, 3, 1);
+      Task firstTask = new Task("Mow the lawn", 1, testDate);
+      Task secondTask = new Task("Mow the lawn", 1, testDate);
 
       Assert.Equal(firstTask, secondTask);
     }
@@ -39,8 +40,8 @@ namespace ToDoList
       {
         Console.WriteLine("ID: {0}, description: {1}", task.GetId(), task.GetDescription());
       }
-
-      Task testTask = new Task("Mow the lawn", 1);
+      DateTime testDate = new DateTime(2016, 3, 1);
+      Task testTask = new Task("Mow the lawn", 1, testDate);
       testTask.Save();
 
       List<Task> result = Task.GetAll();
@@ -58,7 +59,8 @@ namespace ToDoList
     public void Test_Save_AssignsIdToObject()
     {
       //Arrange
-      Task testTask = new Task("Mow the lawn", 1);
+      DateTime testDate = new DateTime(2016, 3, 1);
+      Task testTask = new Task("Mow the lawn", 1, testDate);
 
       //Act
       testTask.Save();
@@ -83,7 +85,8 @@ namespace ToDoList
     public void Test_Find_FindsTaskInDatabase()
     {
       //Arrange
-      Task testTask = new Task("Mow the lawn", 1);
+      DateTime testDate = new DateTime(2016, 3, 1); 
+      Task testTask = new Task("Mow the lawn", 1, testDate);
       testTask.Save();
 
       //Act

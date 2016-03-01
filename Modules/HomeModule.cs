@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Nancy;
 using Nancy.ViewEngines.Razor;
+using System; 
 
 namespace ToDoList
 {
@@ -40,7 +41,8 @@ namespace ToDoList
       };
       Post["/tasks/new"] = _ =>
       {
-        Task newTask = new Task(Request.Form["task-description"], Request.Form["category-id"]);
+        DateTime testDate = DateTime.Parse( Request.Form["task-dueDate"]);
+        Task newTask = new Task(Request.Form["task-description"], Request.Form["category-id"],testDate);
         newTask.Save();
         return View["success.cshtml"];
       };
