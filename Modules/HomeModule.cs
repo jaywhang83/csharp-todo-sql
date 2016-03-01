@@ -1,7 +1,6 @@
-using Nancy;
 using System.Collections.Generic;
-using ToDoList;
-using System;
+using Nancy;
+using Nancy.ViewEngines.Razor;
 
 namespace ToDoList
 {
@@ -9,31 +8,61 @@ namespace ToDoList
   {
     public HomeModule()
     {
-      // Get["/"] = _ => {
-      //   List<Task> allTasks = Task.GetAll();
-      //   return View["index.cshtml", allTasks];
-      // };
-      // Get["/tasks/new"] = _ => {
-      //   return View["tasks_form.cshtml"];
-      // };
-      // Post["/tasks/new"] = _ => {
-      //   Task newTask = new Task(Request.Form["new-task"]);
-      //   newTask.Save();
-      //   return View["task.cshtml", newTask];
-      // };
-      // Get["/tasks/delete"] = _ => {
-      //   Task.DeleteAll();
-      //   return View["task-deleted.cshtml"];
-      // };
-      // Get["/tasks/search"] = _ => {
-      //   return View["task-search.cshtml"];
-      // };
-      // Post["/tasks/search/results"] = _ => {
-      //   int id = int.Parse(Request.Form["search-task"]);
-      //   var test = Task.Find(id);
-      //   Console.WriteLine(test.GetDescription());
-      //   return View["search-results.cshtml", test];
-      // };
+      Get["/"] = _ =>
+      {
+        List<Category> allCategories = Category.GetAll();
+        return View["index.cshtml", allCategories];
+      };
+      Get["tasks"] = _ =>
+      {
+        List<Task> allTasks = Task.GetAll();
+        return View["tasks.cshtml", allTasks];
+      };
+      Get["/categories"] = _ =>
+      {
+        List<Category> allCategories = Category.GetAll();
+        return View["categories.cshtml", allCategories];
+      };
+      Get["/categories/new"] = _ =>
+      {
+        return View["categories_form.cshtml"];
+      };
+      Post["/categories/new"] = _ =>
+      {
+        Category newCategory = new Category(Request.Form["category-name"]);
+        newCategory.Save();
+        return View["success.cshtml"];
+      };
+      Get["/tasks/new"] = _ =>
+      {
+        List<Category> allCategories = Category.GetAll();
+        return View["tasks_form.cshtml", allCategories];
+      };
+      Post["/tasks/new"] = _ =>
+      {
+        Task newTask = new Task(Request.Form["task-description"], Request.Form["category-id"]);
+        newTask.Save();
+        return View["success.cshtml"];
+      };
+      Post["/tasks/delete"] = _ =>
+      {
+        Task.DeleteAll();
+        return View["cleared.cshtml"];
+      };
+      Get["/categories/{id}"]= parameters =>
+      {
+        Dictionary<string, object> model = new Dictionary<string, object>();
+        var selectedCategory = Category.Find(parameters.id);
+        var categoryTasks = selectedCategory.GetTasks();
+        model.Add("category", selectedCategory);
+        model.Add("tasks", categoryTasks);
+        return View["category.cshtml", model];
+      };
+      Post["/categories/delete"] = _ =>
+      {
+        Category.DeleteAll();
+        return View["categories-cleared.cshtml"];
+      };
     }
   }
 }
