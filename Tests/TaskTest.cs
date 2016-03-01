@@ -22,22 +22,34 @@ namespace ToDoList
     }
 
     [Fact]
-    public void Test_Equal_ReturnsTrueIfDescriptionsAreTheSame()
+    public void Test_Equal_overrideTrueForSameDescription()
     {
-      Task firstTask = new Task("Mow the lawn");
-      Task secondTask = new Task("Mow the lawn");
+      Task firstTask = new Task("Mow the lawn", 1);
+      Task secondTask = new Task("Mow the lawn", 1);
 
       Assert.Equal(firstTask, secondTask);
     }
 
     [Fact]
-    public void Test_SavesToDataBase()
+    public void Test_Save()
     {
-      Task testTask = new Task("Mow the lawn");
+      List<Task> initialTasks = Task.GetAll();
+      Console.WriteLine("Initial Tasks:");
+      foreach (Task task in initialTasks)
+      {
+        Console.WriteLine("ID: {0}, description: {1}", task.GetId(), task.GetDescription());
+      }
 
+      Task testTask = new Task("Mow the lawn", 1);
       testTask.Save();
+
       List<Task> result = Task.GetAll();
       List<Task> testList = new List<Task>{testTask};
+      Console.WriteLine("result tasks:");
+      foreach (Task task in result)
+      {
+        Console.WriteLine("ID: {0}, description: {1}", task.GetId(), task.GetDescription());
+      }
 
       Assert.Equal(testList, result);
     }
@@ -46,10 +58,18 @@ namespace ToDoList
     public void Test_Save_AssignsIdToObject()
     {
       //Arrange
-      Task testTask = new Task("Mow the lawn");
+      Task testTask = new Task("Mow the lawn", 1);
 
       //Act
       testTask.Save();
+
+      List<Task> testSaveTasks = Task.GetAll();
+      Console.WriteLine("testSaveTasks tasks:");
+      foreach (Task task in testSaveTasks)
+      {
+        Console.WriteLine("ID: {0}, description: {1}", task.GetId(), task.GetDescription());
+      }
+
       Task savedTask = Task.GetAll()[0];
 
       int result = savedTask.GetId();
@@ -63,7 +83,7 @@ namespace ToDoList
     public void Test_Find_FindsTaskInDatabase()
     {
       //Arrange
-      Task testTask = new Task("Mow the lawn");
+      Task testTask = new Task("Mow the lawn", 1);
       testTask.Save();
 
       //Act

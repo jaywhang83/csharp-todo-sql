@@ -1,5 +1,3 @@
-// xunit runs all of the tests in parallel, meaning it doesnt't wait for one test to finish before starting the next test. This might cause problem if our teardown clears a variable after running a test before another test has finished using that variable, which might cause an error we won't be able ro find in our code. To solve the problem you have to tell xUnit to run tests in serial, which means that xUnit will know to wait for each test to finish before starting the next test. The codes below tells xUnit to run the tests in serial.
-
 {
   "parallelizeAssembly" : false,
   "parallelizeTestCollections" : false
