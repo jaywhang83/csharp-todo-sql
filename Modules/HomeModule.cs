@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Nancy;
 using Nancy.ViewEngines.Razor;
-using System; 
+using System;
 
 namespace ToDoList
 {
@@ -64,6 +64,28 @@ namespace ToDoList
       {
         Category.DeleteAll();
         return View["categories-cleared.cshtml"];
+      };
+      Get["category/edit/{id}"] = parameters =>
+      {
+        Category selectedCategory = Category.Find(parameters.id);
+        return View["category_edit.cshtml", selectedCategory];
+      };
+      Patch["category/edit/{id}"] = parameters =>
+      {
+        Category selectedCategory = Category.Find(parameters.id);
+        selectedCategory.Update(Request.Form["category-name"]);
+        return View["success.cshtml"];
+      };
+      Get["category/delete/{id}"] = parameters =>
+      {
+        Category selectedCategory = Category.Find(parameters.id);
+        return View["category_delete.cshtml", selectedCategory];
+      };
+      Delete["category/delete/{id}"] = parameters =>
+      {
+        Category selectedCategory = Category.Find(parameters.id);
+        selectedCategory.Delete();
+        return View["success.cshtml"];
       };
     }
   }
