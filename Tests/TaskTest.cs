@@ -78,10 +78,50 @@ namespace ToDoList
       Assert.Equal(testTask, foundTask);
     }
 
+    [Fact]
+    public void Test_AddCategory_AddsCategoryToTask()
+    {
+      DateTime testDate = new DateTime(2016, 3, 1);
+
+      Task testTask = new Task("Mow the lawn", testDate);
+      testTask.Save();
+
+      Category testCategory = new Category("Home stuff");
+      testCategory.Save();
+
+      testTask.AddCategory(testCategory);
+
+      List<Category> result = testTask.GetCategories();
+      List<Category> testList = new List<Category> {testCategory};
+
+      Assert.Equal(testList, result);
+    }
+
+    [Fact]
+    public void Test_GetCategories_ReturnsAllCategories()
+    {
+      DateTime testDate = new DateTime(2016, 3, 1);
+
+      Task testTask = new Task("Mow the lawn", testDate);
+      testTask.Save();
+
+      Category testCategory1 = new Category("Home stuff");
+      testCategory1.Save();
+
+      Category testCategory2 = new Category("Work stuff");
+      testCategory2.Save();
+
+      testTask.AddCategory(testCategory1);
+      List<Category> result = testTask.GetCategories();
+      List<Category> testList = new List<Category> {testCategory1};
+
+      Assert.Equal(testList, result);
+    }
+
     public void Dispose()
     {
       Task.DeleteAll();
-      Category.DeleteAll(); 
+      Category.DeleteAll();
     }
   }
 }
