@@ -25,8 +25,8 @@ namespace ToDoList
     public void Test_Equal_overrideTrueForSameDescription()
     {
       DateTime testDate = new DateTime(2016, 3, 1);
-      Task firstTask = new Task("Mow the lawn", 1, testDate);
-      Task secondTask = new Task("Mow the lawn", 1, testDate);
+      Task firstTask = new Task("Mow the lawn", testDate);
+      Task secondTask = new Task("Mow the lawn", testDate);
 
       Assert.Equal(firstTask, secondTask);
     }
@@ -34,23 +34,12 @@ namespace ToDoList
     [Fact]
     public void Test_Save()
     {
-      List<Task> initialTasks = Task.GetAll();
-      Console.WriteLine("Initial Tasks:");
-      foreach (Task task in initialTasks)
-      {
-        Console.WriteLine("ID: {0}, description: {1}", task.GetId(), task.GetDescription());
-      }
       DateTime testDate = new DateTime(2016, 3, 1);
-      Task testTask = new Task("Mow the lawn", 1, testDate);
+      Task testTask = new Task("Mow the lawn", testDate);
       testTask.Save();
 
       List<Task> result = Task.GetAll();
       List<Task> testList = new List<Task>{testTask};
-      Console.WriteLine("result tasks:");
-      foreach (Task task in result)
-      {
-        Console.WriteLine("ID: {0}, description: {1}", task.GetId(), task.GetDescription());
-      }
 
       Assert.Equal(testList, result);
     }
@@ -60,17 +49,10 @@ namespace ToDoList
     {
       //Arrange
       DateTime testDate = new DateTime(2016, 3, 1);
-      Task testTask = new Task("Mow the lawn", 1, testDate);
+      Task testTask = new Task("Mow the lawn", testDate);
 
       //Act
       testTask.Save();
-
-      List<Task> testSaveTasks = Task.GetAll();
-      Console.WriteLine("testSaveTasks tasks:");
-      foreach (Task task in testSaveTasks)
-      {
-        Console.WriteLine("ID: {0}, description: {1}", task.GetId(), task.GetDescription());
-      }
 
       Task savedTask = Task.GetAll()[0];
 
@@ -85,8 +67,8 @@ namespace ToDoList
     public void Test_Find_FindsTaskInDatabase()
     {
       //Arrange
-      DateTime testDate = new DateTime(2016, 3, 1); 
-      Task testTask = new Task("Mow the lawn", 1, testDate);
+      DateTime testDate = new DateTime(2016, 3, 1);
+      Task testTask = new Task("Mow the lawn", testDate);
       testTask.Save();
 
       //Act
@@ -99,6 +81,7 @@ namespace ToDoList
     public void Dispose()
     {
       Task.DeleteAll();
+      Category.DeleteAll(); 
     }
   }
 }

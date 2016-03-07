@@ -6,17 +6,15 @@ namespace ToDoList
 {
   public class Task
   {
-    private int _id;
-    private string _description;
-    private int _categoryId;
-    private DateTime _dueDate;
+    private int Id;
+    private string Description;
+    private DateTime DueDate;
 
-    public Task(string Description, int CategoryId, DateTime DueDate, int Id = 0)
+    public Task(string description, DateTime dueDate, int id = 0)
     {
-      _id = Id;
-      _description = Description;
-      _categoryId = CategoryId;
-      _dueDate = DueDate;
+      Id = id;
+      Description = description;
+      DueDate = dueDate;
     }
 
     public override bool Equals(System.Object otherTask)
@@ -30,44 +28,31 @@ namespace ToDoList
         Task newTask = (Task) otherTask;
         bool idEquality = this.GetId() == newTask.GetId();
         bool descriptionEquality = this.GetDescription() == newTask.GetDescription();
-        bool categoryEquality = this.GetCategoryId() == newTask.GetCategoryId();
         bool dueDateEquality = this.GetDueDate() == newTask.GetDueDate();
 
-        return (idEquality && descriptionEquality && categoryEquality && dueDateEquality);
+        return (idEquality && descriptionEquality && dueDateEquality);
       }
     }
-    // public override int GetHashCode()
-    // {
-    //   return 0;
-    // }
 
     public int GetId()
     {
-      return _id;
+      return Id;
     }
     public string GetDescription()
     {
-      return _description;
-    }
-    public int GetCategoryId()
-    {
-      return _categoryId;
+      return Description;
     }
     public DateTime GetDueDate()
     {
-      return _dueDate;
+      return DueDate;
     }
     public void SetDescription(string newDescription)
     {
-      _description = newDescription;
-    }
-    public void SetCategoryId(int newCategoryId)
-    {
-      _categoryId = newCategoryId;
+      Description = newDescription;
     }
     public void SetDueDate(DateTime newDueDate)
     {
-      _dueDate = newDueDate;
+      DueDate = newDueDate;
     }
     public static List<Task> GetAll()
     {
@@ -84,9 +69,8 @@ namespace ToDoList
       {
         int taskId = rdr.GetInt32(0);
         string taskDescription = rdr.GetString(1);
-        int taskCategoryId = rdr.GetInt32(2);
-        DateTime taskDueDate = rdr.GetDateTime(3);
-        Task newTask = new Task(taskDescription, taskCategoryId, taskDueDate, taskId);
+        DateTime taskDueDate = rdr.GetDateTime(2);
+        Task newTask = new Task(taskDescription, taskDueDate, taskId);
         allTasks.Add(newTask);
       }
 
@@ -107,28 +91,23 @@ namespace ToDoList
       SqlDataReader rdr;
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("INSERT INTO tasks (description, category_id, dueDate) OUTPUT INSERTED.id VALUES (@TaskDescription, @TaskCategoryId, @TaskDueDate);", conn);
+      SqlCommand cmd = new SqlCommand("INSERT INTO tasks (description, dueDate) OUTPUT INSERTED.id VALUES (@TaskDescription,  @TaskDueDate);", conn);
 
       SqlParameter descriptionParameter = new SqlParameter();
       descriptionParameter.ParameterName = "@TaskDescription";
       descriptionParameter.Value = this.GetDescription();
-
-      SqlParameter categoryIdParameter = new SqlParameter();
-      categoryIdParameter.ParameterName = "@TaskCategoryId";
-      categoryIdParameter.Value = this.GetCategoryId();
 
       SqlParameter dueDateParameter = new SqlParameter();
       dueDateParameter.ParameterName = "@TaskDueDate";
       dueDateParameter.Value = this.GetDueDate();
 
       cmd.Parameters.Add(descriptionParameter);
-      cmd.Parameters.Add(categoryIdParameter);
       cmd.Parameters.Add(dueDateParameter);
       rdr = cmd.ExecuteReader();
 
       while(rdr.Read())
       {
-        this._id = rdr.GetInt32(0);
+        this.Id = rdr.GetInt32(0);
       }
       if (rdr != null)
       {
@@ -154,17 +133,15 @@ namespace ToDoList
 
       int foundTaskId = 0;
       string foundTaskDescription = null;
-      int foundTaskCategoryId = 0;
       DateTime foundTaskDueDate = new DateTime();
 
       while(rdr.Read())
       {
         foundTaskId = rdr.GetInt32(0);
         foundTaskDescription = rdr.GetString(1);
-        foundTaskCategoryId = rdr.GetInt32(2);
-        foundTaskDueDate = rdr.GetDateTime(3);
+        foundTaskDueDate = rdr.GetDateTime(2);
       }
-      Task foundTask = new Task(foundTaskDescription, foundTaskCategoryId, foundTaskDueDate, foundTaskId);
+      Task foundTask = new Task(foundTaskDescription, foundTaskDueDate, foundTaskId);
 
       if (rdr != null)
       {
@@ -185,5 +162,24 @@ namespace ToDoList
       cmd.ExecuteNonQuery();
     }
 
+    public void Delete()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd= new SqlCommand("Delete FROM tasks WHERE id = @TaskId;", conn);
+
+      SqlParameter taskIdParameter = new SqlParameter();
+      taskIdParameter.ParameterName = "@TaskId";
+      taskIdParameter.Value = this.GetId();
+
+      cmd.Parameters.Add(taskIdParameter);
+      cmd.ExecuteNonQuery();
+
+      if(conn != null)
+      {
+        conn.Close();
+      }
+    }
   }
 }
