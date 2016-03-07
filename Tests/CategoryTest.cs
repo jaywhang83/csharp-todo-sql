@@ -74,10 +74,10 @@ namespace ToDoList
 
       DateTime testDate = new DateTime(2016, 3, 1);
 
-      Task testTask1 = new Task("Mow the lawn", testDate);
+      Task testTask1 = new Task("Mow the lawn", testDate, false);
       testTask1.Save();
 
-      Task testTask2 = new Task("Water the garden", testDate);
+      Task testTask2 = new Task("Water the garden", testDate, false);
       testTask2.Save();
 
       testCategory.AddTask(testTask1);
@@ -111,10 +111,10 @@ namespace ToDoList
 
       DateTime testDate = new DateTime(2016, 3, 1);
 
-      Task testTask1 = new Task("Mow the lawn", testDate);
+      Task testTask1 = new Task("Mow the lawn", testDate, false);
       testTask1.Save();
 
-      Task testTask2 = new Task("Do the dishes", testDate);
+      Task testTask2 = new Task("Do the dishes", testDate, false);
       testTask2.Save();
 
       testCategory.AddTask(testTask1);
@@ -151,9 +151,9 @@ namespace ToDoList
       testCategory2.Save();
 
       DateTime testDate = new DateTime(2016, 3, 2);
-      Task tesstTask1 = new Task("Mow the lawn", testDate);
-      tesstTask1.Save();
-      Task testTask2 = new Task("Send emails", testDate);
+      Task testTask1 = new Task("Mow the lawn", testDate, false);
+      testTask1.Save();
+      Task testTask2 = new Task("Send emails", testDate, false);
       testTask2.Save();
 
       testCategory1.Delete();
@@ -168,7 +168,7 @@ namespace ToDoList
     {
       string testDescription = "Mow the lawn";
       DateTime testDate = new DateTime(2016, 3, 1);
-      Task testTask = new Task(testDescription, testDate);
+      Task testTask = new Task(testDescription, testDate, false);
       testTask.Save();
 
       string testName = "Home stuff";
@@ -181,7 +181,7 @@ namespace ToDoList
       List<Category> resultTaskCategories = testTask.GetCategories();
       List<Category> testTaskCategories = new List<Category> {};
 
-      Assert.Equal(resultTaskCategories, testTaskCategories); 
+      Assert.Equal(resultTaskCategories, testTaskCategories);
     }
 
     public void Dispose()

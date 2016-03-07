@@ -25,8 +25,8 @@ namespace ToDoList
     public void Test_Equal_overrideTrueForSameDescription()
     {
       DateTime testDate = new DateTime(2016, 3, 1);
-      Task firstTask = new Task("Mow the lawn", testDate);
-      Task secondTask = new Task("Mow the lawn", testDate);
+      Task firstTask = new Task("Mow the lawn", testDate, false);
+      Task secondTask = new Task("Mow the lawn", testDate, false);
 
       Assert.Equal(firstTask, secondTask);
     }
@@ -35,7 +35,7 @@ namespace ToDoList
     public void Test_Save()
     {
       DateTime testDate = new DateTime(2016, 3, 1);
-      Task testTask = new Task("Mow the lawn", testDate);
+      Task testTask = new Task("Mow the lawn", testDate, false);
       testTask.Save();
 
       List<Task> result = Task.GetAll();
@@ -49,7 +49,7 @@ namespace ToDoList
     {
       //Arrange
       DateTime testDate = new DateTime(2016, 3, 1);
-      Task testTask = new Task("Mow the lawn", testDate);
+      Task testTask = new Task("Mow the lawn", testDate, false);
 
       //Act
       testTask.Save();
@@ -68,7 +68,7 @@ namespace ToDoList
     {
       //Arrange
       DateTime testDate = new DateTime(2016, 3, 1);
-      Task testTask = new Task("Mow the lawn", testDate);
+      Task testTask = new Task("Mow the lawn", testDate, false);
       testTask.Save();
 
       //Act
@@ -83,7 +83,7 @@ namespace ToDoList
     {
       DateTime testDate = new DateTime(2016, 3, 1);
 
-      Task testTask = new Task("Mow the lawn", testDate);
+      Task testTask = new Task("Mow the lawn", testDate, false);
       testTask.Save();
 
       Category testCategory = new Category("Home stuff");
@@ -102,7 +102,7 @@ namespace ToDoList
     {
       DateTime testDate = new DateTime(2016, 3, 1);
 
-      Task testTask = new Task("Mow the lawn", testDate);
+      Task testTask = new Task("Mow the lawn", testDate, false);
       testTask.Save();
 
       Category testCategory1 = new Category("Home stuff");
@@ -119,6 +119,21 @@ namespace ToDoList
     }
 
     [Fact]
+    public void Test_GetCompletedTasks_ReturnsCompletedTasks()
+    {
+      DateTime testDate = new DateTime(2016, 3, 1);
+
+      Task testTask1 = new Task("Mow the lawn", testDate, false);
+      testTask1.Save();
+
+      Task testTask2 = new Task("Walk the dog", testDate, true);
+      testTask2.Save();
+
+      List<Task> result = testTask2.GetCompletedTasks();
+      List<Task> testList = new List<Task> {testTask2};
+    }
+
+    [Fact]
     public void Test_Delete_DeletesTaskAssociationsFromDatabase()
     {
       Category testCategory = new Category("Home stuff");
@@ -126,8 +141,8 @@ namespace ToDoList
 
       string testDescription = "Mow the lawn";
       DateTime testDate = new DateTime(2016, 3, 1);
-      Task testTask = new Task(testDescription, testDate);
-      testTask.Save(); 
+      Task testTask = new Task(testDescription, testDate, false);
+      testTask.Save();
 
       testTask.AddCategory(testCategory);
       testTask.Delete();
