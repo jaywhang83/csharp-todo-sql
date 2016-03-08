@@ -136,6 +136,11 @@ namespace ToDoList
         }
         return View["completedTasks.cshtml", completedTasks];
       };
+      Post["/task/completed/delete"] = _ =>
+      {
+        Task.DeleteCompletedTask();
+        return View["cleared.cshtml"];
+      };
     }
   }
 }

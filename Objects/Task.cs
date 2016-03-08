@@ -357,5 +357,14 @@ namespace ToDoList
         conn.Close();
       }
     }
+
+    public static void DeleteCompletedTask()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("DELETE FROM tasks WHERE is_done = 1;", conn);
+      cmd.ExecuteNonQuery();
+    }
   }
 }

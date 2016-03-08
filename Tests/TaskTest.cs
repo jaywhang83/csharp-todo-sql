@@ -176,6 +176,28 @@ namespace ToDoList
       Assert.Equal(taskIsCompleted, resultTaskCompleted);
     }
 
+    [Fact]
+    public void Test_DeleteCompletedTask_DeletesCompletedTasks()
+    {
+      string testDescription = "Mow the lawn";
+      DateTime testDate = new DateTime(2016, 3, 1);
+      Task testTask1 = new Task(testDescription, testDate, false);
+      testTask1.Save();
+
+      string testDescription2 = "Wash the car";
+      DateTime testDueDate2 = new DateTime(2016, 4, 5);
+      bool taskIsCompleted2 = true;
+      Task testTask2 = new Task(testDescription2, testDueDate2, taskIsCompleted2);
+      testTask2.Save();
+
+      Task.DeleteCompletedTask();
+
+      List<Task> resultList = Task.GetAll();
+      List<Task> testList = new List<Task> {testTask1};
+
+      Assert.Equal(testList, resultList);
+    }
+
     public void Dispose()
     {
       Task.DeleteAll();
