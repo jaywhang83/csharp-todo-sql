@@ -153,6 +153,23 @@ namespace ToDoList
       Assert.Equal(resultCategoryTasks, testCategoryList);
     }
 
+    [Fact]
+    public void Test_isCompeted_marksTaskAsCompleted()
+    {
+      string testDescription = "Mow the lawn";
+      DateTime testDate = new DateTime(2016, 3, 1);
+      Task testTask = new Task(testDescription, testDate, false);
+      testTask.Save();
+
+      bool taskIsCompleted = true;
+
+      testTask.isCompleted(taskIsCompleted);
+
+      bool result = testTask.GetIsDone();
+
+      Assert.Equal(taskIsCompleted, result);
+    }
+
     public void Dispose()
     {
       Task.DeleteAll();

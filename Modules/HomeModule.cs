@@ -112,14 +112,15 @@ namespace ToDoList
         selectedCategory.Delete();
         return View["success.cshtml"];
       };
-      Patch["/task/completed/{id}"]= parameters =>
-      {
-        Task selectedTask = Task.Find(parameters.id);
-        Console.WriteLine(selectedTask); 
-        Console.WriteLine(selectedTask.isCompleted(Request.Form["task-completed"]));
-        selectedTask.isCompleted(Request.Form["task-completed"]);
-        return View["success.cshtml"];
-      };
+      // Patch["/task/completed/{id}"]= parameters =>
+      // {
+      //   Task selectedTask = Task.Find(parameters.id);
+      //   bool completed = Boolean.Parse(WorkflowSettings.GetValue("task-completed"));
+      //   Console.WriteLine(selectedTask);
+      //   Console.WriteLine(completed);
+      //   selectedTask.isCompleted(completed);
+      //   return View["success.cshtml"];
+      // };
       Get["/task/view/completed"] = _ =>
       {
         List<Task> completedTasks = Task.GetCompletedTasks();

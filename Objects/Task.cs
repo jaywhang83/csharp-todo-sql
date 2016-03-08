@@ -333,7 +333,7 @@ namespace ToDoList
 
       while(rdr.Read())
       {
-        this.Description = rdr.GetString(0);
+        this.IsDone = rdr.GetBoolean(0);
       }
 
       if(rdr != null)
