@@ -112,30 +112,30 @@ namespace ToDoList
         selectedCategory.Delete();
         return View["success.cshtml"];
       };
-      // Get["/task/edit/{id}"] = parameters ==>
-      // {
-      //   Task selectedTask = Task.Find(parameters.id);
-      //   return View["task_edit.cshtml", selectedTask];
-      // };
-      // Patch["/task/completed/{id}"]= parameters =>
-      // {
-      //   Task selectedTask = Task.Find(parameters.id);
-      //   Console.WriteLine(selectedTask);
-      //   DateTime newDueDate = DateTime.Parse( Request.Form["task-dueDate"]);
-      //   bool taskIsCompleted = Boolean.Parse("task-completed");
-      //   Console.WriteLine(taskIsCompleted);
-      //   selectedTask.Update(Request.Form["task-description"], newDueDate, taskIsCompleted);
-      //   return View["success.cshtml"];
-      // };
-      // Get["/task/view/completed"] = _ =>
-      // {
-      //   List<Task> completedTasks = Task.GetCompletedTasks();
-      //   foreach(var task in completedTasks)
-      //   {
-      //     Console.WriteLine(task.GetDescription());
-      //   }
-      //   return View["completedTasks.cshtml", completedTasks];
-      // };
+      Get["/task/edit/{id}"] = parameters =>
+      {
+        Task selectedTask = Task.Find(parameters.id);
+        return View["task_edit.cshtml", selectedTask];
+      };
+      Patch["/task/edit/{id}"]= parameters =>
+      {
+        Task selectedTask = Task.Find(parameters.id);
+        Console.WriteLine(selectedTask);
+        DateTime newDueDate = DateTime.Parse( Request.Form["task-dueDate"]);
+        bool taskIsCompleted = bool.Parse(Request.Form["task-completed"]);
+        Console.WriteLine(taskIsCompleted);
+        selectedTask.Update(Request.Form["task-description"], newDueDate, taskIsCompleted);
+        return View["success.cshtml"];
+      };
+      Get["/task/view/completed"] = _ =>
+      {
+        List<Task> completedTasks = Task.GetCompletedTasks();
+        foreach(var task in completedTasks)
+        {
+          Console.WriteLine(task.GetDescription());
+        }
+        return View["completedTasks.cshtml", completedTasks];
+      };
     }
   }
 }

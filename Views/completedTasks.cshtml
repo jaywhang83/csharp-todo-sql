@@ -10,7 +10,7 @@ else
   <ul>
     @foreach(var task in Model)
     {
-      <li><a href="/tasks/@task.GetId()">@task.GetDescription()</a> | @task.GetDueDate()
+      <li><a href="/tasks/@task.GetId()">@task.GetDescription()</a> | @task.GetDueDate()</li>
     }
   </ul>
   <form action="/tasks/delete" method="post">
