@@ -10,7 +10,14 @@ else
   <ul>
     @foreach(var task in Model)
     {
-      <li><a href="/tasks/@task.GetId()">@task.GetDescription()</a> | @task.GetDueDate()</li>
+      <li><a href="/tasks/@task.GetId()">@task.GetDescription()</a> | @task.GetDueDate()
+      <form action="/task/view/completed" method="post">
+        <input type="hidden" name="_method" value="PATCH">
+          <input name="task-id" type="hidden" value="@task.GetId()">
+        <input type="checkbox" value="true" name="task-completed"/>Task completed
+        <button type="submit">Submit completed task</button>
+      </form>
+      </li>
     }
   </ul>
   <form action="/tasks/delete" method="post">

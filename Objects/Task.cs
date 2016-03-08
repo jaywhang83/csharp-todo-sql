@@ -283,7 +283,7 @@ namespace ToDoList
       }
       return categories;
     }
-    public List<Task> GetCompletedTasks()
+    public static List<Task> GetCompletedTasks()
     {
       List<Task> completedTasks = new List<Task> {};
       SqlConnection conn = DB.Connection();
@@ -311,6 +311,39 @@ namespace ToDoList
         conn.Close();
       }
       return completedTasks;
+    }
+    public void isCompleted(bool completed)
+    {
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr;
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("UPDATE tasks SET is_done = @Completed OUTPUT INSERTED.is_done WHERE id = @TaskId;", conn);
+
+      SqlParameter completedParameter = new SqlParameter();
+      completedParameter.ParameterName = "@Completed";
+      completedParameter.Value = completed;
+      cmd.Parameters.Add(completedParameter);
+
+      SqlParameter taskIdParameter = new SqlParameter();
+      taskIdParameter.ParameterName = "@TaskId";
+      taskIdParameter.Value = this.GetId();
+      cmd.Parameters.Add(taskIdParameter);
+      rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        this.Description = rdr.GetString(0);
+      }
+
+      if(rdr != null)
+      {
+        rdr.Close();
+      }
+      if(conn != null)
+      {
+        conn.Close();
+      }
     }
   }
 }

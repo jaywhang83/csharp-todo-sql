@@ -129,7 +129,7 @@ namespace ToDoList
       Task testTask2 = new Task("Walk the dog", testDate, true);
       testTask2.Save();
 
-      List<Task> result = testTask2.GetCompletedTasks();
+      List<Task> result = Task.GetCompletedTasks();
       List<Task> testList = new List<Task> {testTask2};
     }
 
