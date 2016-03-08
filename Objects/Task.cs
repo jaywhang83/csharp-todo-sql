@@ -312,13 +312,23 @@ namespace ToDoList
       }
       return completedTasks;
     }
-    public void isCompleted(bool completed)
+    public void Update(string newDescription, DateTime newDueDate, bool completed)
     {
       SqlConnection conn = DB.Connection();
       SqlDataReader rdr;
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("UPDATE tasks SET is_done = @Completed OUTPUT INSERTED.is_done WHERE id = @TaskId;", conn);
+      SqlCommand cmd = new SqlCommand("UPDATE tasks SET description = @TaskDescription, dueDate = @TaskDueDate, is_done = @Completed OUTPUT INSERTED.description, INSERTED.dueDate, INSERTED.is_done WHERE id = @TaskId;", conn);
+
+      SqlParameter descriptionParameter = new SqlParameter();
+      descriptionParameter.ParameterName = "@TaskDescription";
+      descriptionParameter.Value = newDescription;
+      cmd.Parameters.Add(descriptionParameter);
+
+      SqlParameter dueDateParameter = new SqlParameter();
+      dueDateParameter.ParameterName = "@TaskDueDate";
+      dueDateParameter.Value = newDueDate;
+      cmd.Parameters.Add(dueDateParameter);
 
       SqlParameter completedParameter = new SqlParameter();
       completedParameter.ParameterName = "@Completed";
@@ -333,7 +343,9 @@ namespace ToDoList
 
       while(rdr.Read())
       {
-        this.IsDone = rdr.GetBoolean(0);
+        this.Description = rdr.GetString(0);
+        this.DueDate = rdr.GetDateTime(1);
+        this.IsDone = rdr.GetBoolean(2);
       }
 
       if(rdr != null)

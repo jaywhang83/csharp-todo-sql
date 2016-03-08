@@ -39,8 +39,8 @@ namespace ToDoList
       };
       Post["/tasks/new"] = _ =>
       {
-        DateTime testDate = DateTime.Parse( Request.Form["task-dueDate"]);
-        Task newTask = new Task(Request.Form["task-description"], testDate);
+        DateTime newDueDate = DateTime.Parse( Request.Form["task-dueDate"]);
+        Task newTask = new Task(Request.Form["task-description"], newDueDate);
         newTask.Save();
         return View["success.cshtml"];
       };
@@ -112,24 +112,30 @@ namespace ToDoList
         selectedCategory.Delete();
         return View["success.cshtml"];
       };
+      // Get["/task/edit/{id}"] = parameters ==>
+      // {
+      //   Task selectedTask = Task.Find(parameters.id);
+      //   return View["task_edit.cshtml", selectedTask];
+      // };
       // Patch["/task/completed/{id}"]= parameters =>
       // {
       //   Task selectedTask = Task.Find(parameters.id);
-      //   bool completed = Boolean.Parse(WorkflowSettings.GetValue("task-completed"));
       //   Console.WriteLine(selectedTask);
-      //   Console.WriteLine(completed);
-      //   selectedTask.isCompleted(completed);
+      //   DateTime newDueDate = DateTime.Parse( Request.Form["task-dueDate"]);
+      //   bool taskIsCompleted = Boolean.Parse("task-completed");
+      //   Console.WriteLine(taskIsCompleted);
+      //   selectedTask.Update(Request.Form["task-description"], newDueDate, taskIsCompleted);
       //   return View["success.cshtml"];
       // };
-      Get["/task/view/completed"] = _ =>
-      {
-        List<Task> completedTasks = Task.GetCompletedTasks();
-        foreach(var task in completedTasks)
-        {
-          Console.WriteLine(task.GetDescription());
-        }
-        return View["completedTasks.cshtml", completedTasks];
-      };
+      // Get["/task/view/completed"] = _ =>
+      // {
+      //   List<Task> completedTasks = Task.GetCompletedTasks();
+      //   foreach(var task in completedTasks)
+      //   {
+      //     Console.WriteLine(task.GetDescription());
+      //   }
+      //   return View["completedTasks.cshtml", completedTasks];
+      // };
     }
   }
 }

@@ -154,20 +154,26 @@ namespace ToDoList
     }
 
     [Fact]
-    public void Test_isCompeted_marksTaskAsCompleted()
+    public void Test_Update_UpdatesTask()
     {
       string testDescription = "Mow the lawn";
       DateTime testDate = new DateTime(2016, 3, 1);
       Task testTask = new Task(testDescription, testDate, false);
       testTask.Save();
 
+      string newDescription = "Wash the car";
+      DateTime newDueDate = new DateTime(2016, 4, 5);
       bool taskIsCompleted = true;
 
-      testTask.isCompleted(taskIsCompleted);
+      testTask.Update(newDescription, newDueDate, taskIsCompleted);
 
-      bool result = testTask.GetIsDone();
+      string resultDescription = testTask.GetDescription();
+      DateTime resultDueDate = testTask.GetDueDate();
+      bool resultTaskCompleted = testTask.GetIsDone();
 
-      Assert.Equal(taskIsCompleted, result);
+      Assert.Equal(newDescription, resultDescription);
+      Assert.Equal(newDueDate, resultDueDate);
+      Assert.Equal(taskIsCompleted, resultTaskCompleted);
     }
 
     public void Dispose()
