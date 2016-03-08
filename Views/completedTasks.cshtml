@@ -13,7 +13,7 @@ else
       <li><a href="/tasks/@task.GetId()">@task.GetDescription()</a> | @task.GetDueDate()</li>
     }
   </ul>
-  <form action="/tasks/delete" method="post">
+  <form action="/task/completed/delete" method="post">
     <button type="submit">Clear all tasks</button>
   </form>
 }

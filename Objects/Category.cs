@@ -223,50 +223,27 @@ namespace ToDoList
       SqlDataReader rdr = null;
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("SELECT task_id FROM categories_tasks WHERE category_id = @CategoryId;", conn);
+      SqlCommand cmd = new SqlCommand("SELECT tasks. * FROM categories JOIN categories_tasks ON (categories.id = categories_tasks.category_id) JOIN tasks ON (categories_tasks.task_id = tasks.id) WHERE categories.id = @CategoryId", conn);
       SqlParameter categoryIdParameter = new SqlParameter();
       categoryIdParameter.ParameterName = "@CategoryId";
-      categoryIdParameter.Value = this.GetId();
+      categoryIdParameter.Value = this.GetId().ToString();
       cmd.Parameters.Add(categoryIdParameter);
 
       rdr = cmd.ExecuteReader();
 
-      List<int> taskIds = new List<int> {};
+      List<Task> tasks = new List<Task> {};
       while(rdr.Read())
       {
         int taskId = rdr.GetInt32(0);
-        taskIds.Add(taskId);
+        string taskDescription = rdr.GetString(1);
+        DateTime taskDueDate = rdr.GetDateTime(2);
+        bool taskIsDone = rdr.GetBoolean(3);
+        Task newTask = new Task(taskDescription, taskDueDate, taskIsDone, taskId);
+        tasks.Add(newTask);
       }
       if(rdr != null)
       {
         rdr.Close();
-      }
-
-      List<Task> tasks = new List<Task> {};
-      foreach(int taskId in taskIds)
-      {
-        SqlDataReader queryReader = null;
-        SqlCommand taskQuery = new SqlCommand("SELECT * FROM tasks WHERE id = @TaskId;", conn);
-
-        SqlParameter taskIdParameter= new SqlParameter();
-        taskIdParameter.ParameterName = "@TaskId";
-        taskIdParameter.Value = taskId;
-        taskQuery.Parameters.Add(taskIdParameter);
-
-        queryReader = taskQuery.ExecuteReader();
-        while(queryReader.Read())
-        {
-          int thisTaskId = queryReader.GetInt32(0);
-          string taskDescription = queryReader.GetString(1);
-          DateTime taskDueDate = queryReader.GetDateTime(2);
-          bool taskIsDone = queryReader.GetBoolean(3);
-          Task newTask = new Task(taskDescription, taskDueDate, taskIsDone, thisTaskId);
-          tasks.Add(newTask);
-        }
-        if(queryReader != null)
-        {
-          queryReader.Close();
-        }
       }
       if(conn != null)
       {

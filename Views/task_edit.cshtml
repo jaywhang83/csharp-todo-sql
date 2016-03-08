@@ -9,7 +9,8 @@
   <input id="task-description" name="task-description" type="text" value="@Model.GetDescription()">
   <label for="task-dueDate">Task Due Date</label>
   <input id="task-dueDate" name="task-dueDate" type="text" value="@Model.GetDueDate()">
-  <input type="checkbox" value="true" name="task-completed" value="@Model.GetIsDone()"/>Task completed
+  <!-- <input type="hidden" value="@Model.GetIsDone()" name="task-completed"/> -->
+  <input type="checkbox" value="true" name="task-completed" />Task completed
   <button type="submit">Submit</button>
 </form>
 <h4><a href="/">Return home</a></h4>
